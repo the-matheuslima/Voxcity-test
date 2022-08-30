@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { cpfMask } from "../helpers/maskCpf";
 import { verificarCPF } from "../helpers/validate_cpf";
 import crud from '../utils/crud-users.json'
+import { v4 as uuidv4 } from 'uuid'
 
 export const UserContext = createContext({});
 
@@ -12,6 +13,7 @@ export const UserProvider = ({ children }) => {
     const [cpfValidate, setCpfValidate] = useState(false)
     const [usersList, setUserList] = useState(crud);
     const [modalLogin, setModalLogin] = useState(false);
+    const [modalUpdate, setModalUpdate] = useState(false);
 
 
     const handlerName = (nameValue) => {
@@ -29,7 +31,10 @@ export const UserProvider = ({ children }) => {
 
     const handlerModalLogin = () => {
         setModalLogin(!modalLogin)
-        console.log(modalLogin);
+    }
+
+    const handlerModalUpdate = (id) => {
+        setModalUpdate(!modalUpdate)
     }
 
     const AddUser = (e) => {
@@ -39,18 +44,26 @@ export const UserProvider = ({ children }) => {
             const newUser = {
                 name: name,
                 password: password,
-                cpf: cpf
+                cpf: cpf,
+                id: uuidv4()
             }
-            setUserList([{ ...usersList, ...newUser }])
+            setUserList([...usersList, { ...newUser }])
         }
         else {
             console.log('err');
         }
     }
-    console.log(usersList);
+
+    const UpdateUser = () => {
+
+    }
+
+    const handlerRemoveUser = (id) => {
+        setUserList(usersList.filter((el) => el.id !== id));
+    }
 
 
-    const value = { handlerCpf, handlerPassword, handlerName, name, password, cpf, usersList, handlerModalLogin, modalLogin, AddUser }
+    const value = { handlerCpf, handlerPassword, handlerName, name, password, cpf, usersList, handlerModalLogin, modalLogin, AddUser, handlerModalUpdate, modalUpdate, handlerRemoveUser }
 
     return (
         <UserContext.Provider value={value}>

@@ -11,10 +11,9 @@ export const UserProvider = ({ children }) => {
     const [password, setPassword] = useState('');
     const [cpf, setCpf] = useState('');
     const [cpfValidate, setCpfValidate] = useState(false)
-    const [usersList, setUserList] = useState(crud);
+    const [usersList, setUserList] = useState([]);
     const [modalLogin, setModalLogin] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
-
 
     const handlerName = (nameValue) => {
         setName(nameValue)
@@ -40,7 +39,7 @@ export const UserProvider = ({ children }) => {
     const AddUser = (e) => {
         setCpfValidate(verificarCPF(cpf))
 
-        if (name !== '' && name.length >= 3 && password !== '' && password.length >= 8 && cpf !== '' && cpf !== false) {
+        if (name !== '' && name.length >= 3 && password !== '' && password.length >= 8 && cpf !== '') {
             const newUser = {
                 name: name,
                 password: password,
@@ -50,20 +49,39 @@ export const UserProvider = ({ children }) => {
             setUserList([...usersList, { ...newUser }])
         }
         else {
-            console.log('err');
+            console.log('err')
+            return;
         }
     }
+    const UpdateUser = (id) => {
+        setCpfValidate(verificarCPF(cpf))
+        usersList.forEach(users => {
+            if (users.id === id) {
+                if (name !== '' && name.length >= 3 && password !== '' && password.length >= 8 && cpf !== '') {
+                    const updateUser = {
+                        name: name,
+                        password: password,
+                        cpf: cpf,
+                    }
 
-    const UpdateUser = () => {
-
+                    setUserList([...usersList, updateUser])
+                }
+                else {
+                    console.log('err');
+                    return
+                }
+            }
+        })
     }
+
+    console.log(usersList);
 
     const handlerRemoveUser = (id) => {
         setUserList(usersList.filter((el) => el.id !== id));
     }
 
 
-    const value = { handlerCpf, handlerPassword, handlerName, name, password, cpf, usersList, handlerModalLogin, modalLogin, AddUser, handlerModalUpdate, modalUpdate, handlerRemoveUser }
+    const value = { handlerCpf, handlerPassword, handlerName, name, password, cpf, usersList, handlerModalLogin, modalLogin, AddUser, handlerModalUpdate, modalUpdate, handlerRemoveUser, UpdateUser }
 
     return (
         <UserContext.Provider value={value}>

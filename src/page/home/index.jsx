@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useSearchParams } from "react-router-dom";
 import FormLogin from "../../components/form-login";
 import FormUpdate from "../../components/form-update";
 import { UserContext } from "../../context/users";
@@ -8,6 +9,12 @@ import './style.scss'
 
 const Home = () => {
     const { usersList, handlerModalLogin, modalLogin, handlerModalUpdate, modalUpdate, handlerRemoveUser } = useContext(UserContext);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const navigate = (id) => {
+        setSearchParams({ q: id });
+        handlerModalUpdate()
+    }
 
     return (
         <>
@@ -25,11 +32,11 @@ const Home = () => {
                         </tr>
 
                         {usersList.map((user) => (
-                            <tr className='app__table-body'>
+                            <tr className='app__table-body' key={user.id}>
                                 <td className='app__table-dtl'>{user.name}</td>
                                 <td className='app__table-dtl'>{user.password}</td>
                                 <td className='app__table-dtl'>{user.cpf}</td>
-                                <td className='app__table-edit' onClick={() => handlerModalUpdate(user.id)}>🖌️</td>
+                                <td className='app__table-edit' onClick={() => navigate(user.id)}>🖌️</td>
                                 <td className='app__table-remove' onClick={() => handlerRemoveUser(user.id)}>🗑️</td>
                             </tr>
                         ))}

@@ -47,12 +47,16 @@ export const UserProvider = ({ children }) => {
                 id: uuidv4()
             }
             setUserList([...usersList, { ...newUser }])
+            setName('')
+            setPassword('')
+            setCpf('')
         }
         else {
             console.log('err')
             return;
         }
     }
+
     const UpdateUser = (id) => {
         setCpfValidate(verificarCPF(cpf))
         usersList.forEach(users => {
@@ -64,7 +68,10 @@ export const UserProvider = ({ children }) => {
                         cpf: cpf,
                     }
 
-                    setUserList([...usersList, updateUser])
+                    setUserList([{ ...usersList, ...updateUser }])
+                    setName('')
+                    setPassword('')
+                    setCpf('')
                 }
                 else {
                     console.log('err');

@@ -1,0 +1,28 @@
+.app__table {
+  width: 100%;
+
+  &-head {
+    width: 100%;
+    background-color: rgb(57, 57, 57);
+  }
+
+  &-body {
+    background-color: rgba(57, 57, 57, 0.494);
+  }
+
+  &-dtl {
+    padding: 10px 15px;
+  }
+
+  &-edit {
+    cursor: pointer;
+  }
+
+  &-remove {
+    cursor: pointer;
+  }
+
+  th {
+    text-align: start;
+  }
+}

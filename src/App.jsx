@@ -1,18 +1,23 @@
+import { useContext } from 'react';
 import { useState } from 'react';
 import './App.scss';
-import FormLogin from './components/form-loing';
+import FormLogin from './components/form-login';
 import NavBar from './components/navbar';
-import CRUD from './utils/crud-users.json'
+import { UserContext } from './context/users';
 
 function App() {
-  const [usersList, setUserList] = useState(CRUD);
-
+  const { usersList, handlerModalLogin, modalLogin } = useContext(UserContext);
+  console.log(usersList);
   return (
     <>
       <NavBar />
 
       <main>
         <section className='app__table'>
+          <div>
+            <button type='button' onClick={() => handlerModalLogin()}>Add User</button>
+          </div>
+
           <table className='app__table-users'>
             <tr className='app__table-head'>
               <th>Name</th>
@@ -20,7 +25,7 @@ function App() {
               <th>CPF</th>
             </tr>
 
-            {usersList.users.map((user) => (
+            {usersList.map((user) => (
               <tr className='app__table-body'>
                 <td className='app__table-dtl'>{user.name}</td>
                 <td className='app__table-dtl'>{user.password}</td>
@@ -31,9 +36,9 @@ function App() {
             ))}
           </table>
         </section>
-        <FormLogin />
-
       </main>
+      {modalLogin && <FormLogin />}
+
     </>
   );
 }
